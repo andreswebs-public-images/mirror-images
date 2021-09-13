@@ -23,8 +23,9 @@ jobs:
         env:
           ECR_REGISTRY: public.ecr.aws
           ECR_REPOSITORY: andreswebs/loki
+          ORIGIN_REPOSITORY: grafana/loki
           IMAGE_TAG: "2.3.0"
         run: |
-          docker build -t "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" --build-arg "IMAGE=$ECR_REPOSITORY:$IMAGE_TAG" .
+          docker build -t "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" --build-arg "IMAGE=$ORIGIN_REPOSITORY:$IMAGE_TAG" .
           docker push "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
           
