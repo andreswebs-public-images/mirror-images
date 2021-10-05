@@ -23,7 +23,7 @@ jobs:
         env:
           ECR_REGISTRY: public.ecr.aws
           ECR_REPOSITORY: andreswebs/aws-cli
-          ORIGIN_REPOSITORY: amazon
+          ORIGIN_REPOSITORY: amazon/aws-cli
           IMAGE_TAG: latest
         run: |
           docker build -t "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" --build-arg "IMAGE=$ORIGIN_REPOSITORY:$IMAGE_TAG" .
