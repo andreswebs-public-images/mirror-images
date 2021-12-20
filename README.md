@@ -25,6 +25,7 @@ aws ecr-public create-repository --repository-name <repo-name>
 | [docker.io/atmoz/sftp](https://hub.docker.com/r/atmoz/sftp)                                    | [public.ecr.aws/andreswebs/sftp](https://gallery.ecr.aws/andreswebs/sftp) |
 | [docker.io/ubuntu](https://hub.docker.com/_/ubuntu)                                    | [public.ecr.aws/andreswebs/ubuntu](https://gallery.ecr.aws/andreswebs/ubuntu) |
 | [docker.io/alpine](https://hub.docker.com/_/alpine)                                    | [public.ecr.aws/andreswebs/alpine](https://gallery.ecr.aws/andreswebs/alpine) |
+| [docker.io/bash](https://hub.docker.com/_/bash)                                    | [public.ecr.aws/andreswebs/bash](https://gallery.ecr.aws/andreswebs/bash) |
 
 ## Authors
 
