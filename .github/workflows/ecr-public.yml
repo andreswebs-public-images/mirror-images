@@ -19,11 +19,45 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        image:
+
+          - name: alpine
+            tag: latest
+
+          - name: bash
+            tag: latest
+
+          - name: ubuntu
+            tag: latest
+
+          - name: memcached
+            tag: 1.6.7-alpine
+
+          - name: atmoz/sftp
+            tag: latest
+
+          - name: grafana/loki
+            tag: "2.3.0"
+
+          - name: grafana/promtail
+            tag: "2.3.0"
+
+          - name: prom/pushgateway
+            tag: v1.3.1
+
+          - name: prom/memcached-exporter
+            tag: v0.6.0
+
+          - name: nginxinc/nginx-unprivileged
+            tag: 1.19-alpine
+
+          - name: jpetazzo/shpod
+            tag: latest
+
     env:
       CONTAINER_REGISTRY: public.ecr.aws
-      CONTAINER_REPOSITORY: andreswebs/lua
-      IMAGE_TAG: ${{ github.sha }}
-      IMAGE_DEFAULT_TAG: latest
 
     steps:
 
@@ -44,13 +78,18 @@ jobs:
         with:
           registry: ${{ env.CONTAINER_REGISTRY }}
 
-      - name: Build and push
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          platforms: linux/amd64,linux/arm64
-          push: true
-          provenance: false
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache
-          tags: ${{ env.CONTAINER_REGISTRY }}/${{ env.CONTAINER_REPOSITORY }}:${{ env.IMAGE_TAG }},${{ env.CONTAINER_REGISTRY }}/${{ env.CONTAINER_REPOSITORY }}:${{ env.IMAGE_DEFAULT_TAG }}
+      - name: Get image basename
+        id: basename
+        run: |
+          IMAGE_BASENAME=$(basename ${{ matrix.image.name }})
+          echo "image-basename=${IMAGE_BASENAME}" >> $GITHUB_OUTPUT
+
+      - name: Build, tag, and push image to Amazon Public ECR
+        env:
+          CONTAINER_REGISTRY: ${{ env.CONTAINER_REGISTRY }}
+          CONTAINER_REPOSITORY: andreswebs/${{ steps.basename.outputs.image-basename }}
+          ORIGIN_REPOSITORY: ${{ matrix.image.name }}
+          IMAGE_TAG: ${{ matrix.image.tag }}
+        run: |
+          docker build --tag "${CONTAINER_REGISTRY}/${CONTAINER_REPOSITORY}:${IMAGE_TAG}" --build-arg "IMAGE=${ORIGIN_REPOSITORY}:${IMAGE_TAG}" .
+          docker push "${CONTAINER_REGISTRY}/${CONTAINER_REPOSITORY}:${IMAGE_TAG}"
