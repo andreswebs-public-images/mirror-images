@@ -56,9 +56,6 @@ jobs:
           - name: jpetazzo/shpod
             tag: latest
 
-          - name: continuumio/anaconda3
-            tag: latest
-
     env:
       CONTAINER_REGISTRY: public.ecr.aws
 
