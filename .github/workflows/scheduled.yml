@@ -30,7 +30,7 @@ jobs:
       runs-on: ubuntu-latest
       aws-region: ${{ vars.AWS_REGION }}
       role-to-assume: ${{ vars.AWS_IAM_ROLE_ARN }}
-      ecr-repo-name: ${{ matrix.image.name}
+      ecr-repo-name: andreswebs/${{ matrix.image.name }}
       ecr-registry-type: public
       context-dir: .
       use-hash: false
