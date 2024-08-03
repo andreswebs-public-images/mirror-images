@@ -38,4 +38,4 @@ jobs:
       add-image-default-tag: true
       image-default-tag: ${{ matrix.image.tag }}
       build-args: |
-        IMAGE=${{ matrix.image.registry }}/${{ matrix.image.namespace}/${{ matrix.image.name}:${{ matrix.image.tag }}
+        IMAGE=${{ matrix.image.registry }}/${{ matrix.image.namespace }}/${{ matrix.image.name }}:${{ matrix.image.tag }}
