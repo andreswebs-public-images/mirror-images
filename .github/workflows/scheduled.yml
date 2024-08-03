@@ -1,0 +1,41 @@
+---
+name: Scheduled Build
+
+permissions:
+  id-token: write
+
+on:
+  push:
+    branches:
+      - main
+
+  schedule:
+    - cron: 0 0 * * 0
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        image:
+          # - name: alpine
+          #   tag: latest
+          #   registry: docker.io
+          - name: kubeconform
+            namespace: yannh
+            tag: v0.6.7
+            registry: ghcr.io
+
+    uses: andreswebs/gh-actions/.github/workflows/aws-ecr-push-image.yml@main
+    with:
+      runs-on: ubuntu-latest
+      aws-region: ${{ vars.AWS_REGION }}
+      role-to-assume: ${{ vars.AWS_IAM_ROLE_ARN }}
+      ecr-repo-name: ${{ matrix.image.name}
+      ecr-registry-type: public
+      context-dir: .
+      use-hash: false
+      use-short-hash: false
+      add-image-default-tag: true
+      image-default-tag: ${{ matrix.image.tag }}
+      build-args: |
+        IMAGE=${{ matrix.image.registry }}/${{ matrix.image.namespace}/${{ matrix.image.name}:${{ matrix.image.tag }}

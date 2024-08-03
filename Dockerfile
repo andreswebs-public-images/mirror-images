@@ -1,2 +1,2 @@
-ARG IMAGE=alpine:latest
+ARG IMAGE=scratch
 FROM "${IMAGE}"
